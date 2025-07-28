@@ -8,7 +8,7 @@ import traceback
 from typing import List
 from uuid import uuid4
 
-from chat_memory import add_to_history, get_user_history
+from chat_memory import add_to_history, clear_user_history, get_user_history
 from database import create_token, hash_password, verify_password, mongo_db, get_user_id_from_token
 from fastapi import FastAPI, UploadFile, Form, Query
 from fastapi.middleware.cors import CORSMiddleware
@@ -184,8 +184,10 @@ async def get_summary(session_id: str = Form(...), user_id: str = Form(...)):
         return JSONResponse(status_code=500, content={"error": str(e)})
 
 @app.post("/delete_file/")
-async def delete_file(user_id: str = Form(...), filename: str = Form(...)):
-    handle_delete_file(user_id=user_id, filename=filename)
+async def delete_file(user_id: str = Depends(get_user_id_from_token), filename: str = Form(...)):
+    await handle_delete_file(user_id=user_id, filename=filename)
+    clear_user_history(user_id)
+    return {"status": "deleted"}
 
 @app.post("/beta/query")
 async def beta_query(question: str = Form(...), user_id: str = Depends(get_user_id_from_token)):

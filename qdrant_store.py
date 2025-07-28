@@ -190,7 +190,9 @@ def list_documents() -> List[Dict]:
 
 
 async def handle_delete_file(user_id: str, filename: str):
+    from database import mongo_db
     try:
+        # Delete from Qdrant
         client.delete(
             collection_name=COLLECTION,
             points_selector=Filter(
@@ -201,6 +203,8 @@ async def handle_delete_file(user_id: str, filename: str):
             ),
             wait=True
         )
+        # Delete from MongoDB
+        await mongo_db.files.delete_many({"user_id": user_id, "filename": filename})
 
         return {"message": f"Deleted file: {filename} for user {user_id}."}
     except Exception as e:
