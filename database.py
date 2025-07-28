@@ -35,6 +35,6 @@ def get_user_id_from_token(authorization: str = Header(...)) -> str:
     token = authorization.split(" ")[1]
     try:
         payload = jwt.decode(token, SECRET_KEY, algorithms=["HS256"])
-        return payload.get("sub")  # or "user_id" if that's your claim
+        return payload.get("sub")
     except Exception:
         raise HTTPException(401, "Invalid or expired token")

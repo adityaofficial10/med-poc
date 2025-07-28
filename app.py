@@ -1,4 +1,3 @@
-# query_server.py
 from datetime import datetime
 from http.client import HTTPException
 import json

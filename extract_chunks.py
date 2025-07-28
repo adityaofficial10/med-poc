@@ -1,6 +1,4 @@
-# STEP 1: Updated extract_chunks.py with OCR fallback
-
-import fitz  # PyMuPDF
+import fitz
 import os
 from pdf2image import convert_from_path
 import pytesseract
@@ -22,7 +20,7 @@ def extract_chunks_from_pdf(pdf_path: str):
     if not full_text.strip():
         full_text = extract_text_with_ocr(pdf_path)
 
-    # Simple chunking logic (same as initial prototype)
+    # Simple chunking logic
     parts = full_text.split("Test Report")
     chunks = []
     for section in parts[1:]:

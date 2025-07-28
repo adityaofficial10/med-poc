@@ -1,4 +1,3 @@
-# qdrant_store.py
 import os
 import hashlib
 from datetime import datetime
@@ -105,7 +104,6 @@ def upsert_chunks(patient_id: str, filename: str, chunks: List[str], user_id: st
     timestamp = datetime.utcnow().isoformat()
     points = []
     for i, chunk in enumerate(chunks):
-        # Truncate chunk if too long for embedding model
         safe_chunk = truncate_to_token_limit(chunk, 8192, EMBED_MODEL)
         vec = get_embedding(safe_chunk)
         uid = int(hashlib.md5(f"{user_id}_{filename}_{i}".encode()).hexdigest(), 16) % (10**12)
@@ -155,7 +153,6 @@ def search_across_reports(query, top_k, user_id):
         )
     )
 
-    # Optional: group by filename or timestamp
     grouped = {}
     for hit in hits:
         print(hit.payload["filename"])
@@ -170,7 +167,6 @@ def search_across_reports(query, top_k, user_id):
 def list_documents() -> List[Dict]:
     ensure_collection()
     docs = {}
-    # Scroll through all points (small POC; fine)
     scroll, next_page = client.scroll(
         collection_name=COLLECTION,
         with_payload=True,
@@ -192,7 +188,6 @@ def list_documents() -> List[Dict]:
 async def handle_delete_file(user_id: str, filename: str):
     from database import mongo_db
     try:
-        # Delete from Qdrant
         client.delete(
             collection_name=COLLECTION,
             points_selector=Filter(
@@ -203,7 +198,6 @@ async def handle_delete_file(user_id: str, filename: str):
             ),
             wait=True
         )
-        # Delete from MongoDB
         await mongo_db.files.delete_many({"user_id": user_id, "filename": filename})
 
         return {"message": f"Deleted file: {filename} for user {user_id}."}

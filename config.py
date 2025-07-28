@@ -3,9 +3,7 @@ from dotenv import load_dotenv
 
 load_dotenv()
 
-class Config:
-    """Simple configuration class without Pydantic"""
-    
+class Config:    
     def __init__(self):
         # API Keys
         self.openai_api_key = os.getenv("OPENAI_API_KEY")

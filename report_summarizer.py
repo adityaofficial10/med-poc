@@ -6,7 +6,6 @@ def summarize_report(patient_name: str, structured_data: list, risk_profile: dic
     elif tone == "doctor":
         lines.append(f"Summary for patient {patient_name}:\n")
 
-    # Add detected risks
     if tone == "patient":
         for area, level in risk_profile.items():
             if level == "High":
@@ -19,7 +18,6 @@ def summarize_report(patient_name: str, structured_data: list, risk_profile: dic
         for area, level in risk_profile.items():
             lines.append(f"- {area.title()} risk: {level}")
 
-    # Add test highlights (top 2–3 abnormal tests)
     abnormal_tests = []
     for panel in structured_data:
         for test in panel["tests"]:

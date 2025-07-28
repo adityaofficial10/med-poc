@@ -1,4 +1,3 @@
-# structured_parser.py
 import re
 
 def extract_structured_tests(text: str) -> list:

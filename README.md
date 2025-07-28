@@ -23,7 +23,7 @@ A full-stack application for uploading, indexing, searching, and chatting with m
 - **Backend**: FastAPI, MongoDB, Qdrant, OpenAI API, tiktoken, httpx
 - **Frontend**: React (with hooks), react-markdown
 - **Vector DB**: Qdrant
-- **Embeddings**: OpenAI `text-embedding-3-small` (or configurable)
+- **Embeddings**: OpenAI `text-embedding-3-small` (or configurable `emilyalsentzer/Bio_ClinicalBERT`)
 - **LLM**: OpenAI GPT-4 (or configurable)
 
 ---
