@@ -1,0 +1,25 @@
+# Flask Web Framework
+flask==3.0.0
+flask-cors==4.0.0
+
+# PDF Processing
+PyPDF2==3.0.1
+pdfplumber==0.10.3
+
+# Vector Store
+qdrant-client==1.7.3
+
+# AI/ML - Direct SDKs only, NO LANGCHAIN
+openai==1.10.0
+google-generativeai==0.3.2  # DOWNGRADED to avoid conflicts
+numpy==1.24.3
+scikit-learn==1.3.2
+
+# Utilities
+python-dotenv==1.0.0
+
+# Optional (uncomment if needed)
+pytesseract==0.3.10  # For OCR
+pandas==2.1.4  # For tables
+streamlit==1.29.0  # For UI
+plotly==5.18.0  # For charts
