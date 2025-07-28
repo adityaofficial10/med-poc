@@ -17,7 +17,9 @@ export default function Chat() {
     form.append("user_id", token);
 
     try {
-      const res = await api.post("/query/", form);
+      const BETA_ENDPOINT = "/beta/query/";
+      const ENDPOINT = "/query/";
+      const res = await api.post(ENDPOINT, form);
       setAnswer(res.data.answer);
     } catch (err) {
       setAnswer("❌ Error processing your query.");

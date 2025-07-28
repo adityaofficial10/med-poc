@@ -140,6 +140,32 @@ def search_chunks(query: str, top_k: int, user_id: str) -> List[str]:
     )
     return [h.payload["text"] for h in hits]
 
+def search_across_reports(query, top_k, user_id):
+    vector = get_embedding(query)
+
+    # Search across all vectors for this patient
+    hits = client.search(
+        collection_name="medical_reports",
+        query_vector=vector,
+        limit=top_k,
+        query_filter=Filter(
+            must=[
+                FieldCondition(key="user_id", match=MatchValue(value=user_id))
+            ]
+        )
+    )
+
+    # Optional: group by filename or timestamp
+    grouped = {}
+    for hit in hits:
+        print(hit.payload["filename"])
+        filename = hit.payload.get("filename", "unknown")
+        if filename not in grouped:
+            grouped[filename] = []
+        grouped[filename].append(hit.payload["text"])
+
+    return grouped
+
 
 def list_documents() -> List[Dict]:
     ensure_collection()

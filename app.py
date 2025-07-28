@@ -20,8 +20,8 @@ from file_store import store_metadata
 from openai import OpenAI
 
 from extract_chunks import extract_chunks_from_pdf
-from qdrant_store import summarize_chunks, upsert_chunks, search_chunks, list_documents, handle_delete_file, upsert_chunks_async
-from llm_prompter import build_prompt
+from qdrant_store import summarize_chunks, upsert_chunks, search_chunks, list_documents, handle_delete_file, upsert_chunks_async, search_across_reports
+from llm_prompter import build_prompt, build_prompt_beta
 
 OPENAI_API_KEY = os.getenv("OPENAI_API_KEY")
 CHAT_MODEL = os.getenv("CHAT_MODEL", "gpt-4o-mini")  # or gpt-4 / gpt-4o
@@ -187,3 +187,23 @@ async def get_summary(session_id: str = Form(...), user_id: str = Form(...)):
 async def delete_file(user_id: str = Form(...), filename: str = Form(...)):
     handle_delete_file(user_id=user_id, filename=filename)
 
+@app.post("/beta/query")
+async def beta_query(question: str = Form(...), user_id: str = Depends(get_user_id_from_token)):
+    try:
+        grouped_chunks = search_across_reports(question, top_k=15, user_id=user_id)
+
+        if not grouped_chunks:
+            return {"answer": "No relevant context found across your reports."}
+
+        prompt = build_prompt_beta(question, grouped_chunks)
+
+        response = client.chat.completions.create(
+            model=CHAT_MODEL,
+            messages=[{"role": "user", "content": prompt}],
+            temperature=0
+        )
+
+        return {"answer": response.choices[0].message.content}
+
+    except Exception as e:
+        return JSONResponse(status_code=500, content={"error": str(e)})
