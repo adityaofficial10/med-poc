@@ -33,50 +33,62 @@ export default function App() {
   }
 
   return (
-    <div>
+    <div style={{
+      minHeight: "100vh",
+      background: "linear-gradient(135deg, #f8fafc 0%, #e0e7ef 100%)",
+      padding: 0,
+      margin: 0
+    }}>
       <div
         style={{
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "space-between",
-          width: "100%",
+          background: "#fff",
+          borderRadius: 16,
+          boxShadow: "0 4px 24px rgba(0,0,0,0.08)",
           maxWidth: 800,
-          margin: "0 auto",
-          marginTop: 32,
-          marginBottom: 32,
+          margin: "40px auto",
+          padding: 32,
+          minHeight: 600
         }}
       >
-        <div style={{ flex: 1 }} />
-        <h1 style={{ flex: 2, textAlign: "center", margin: 0 }}>
-          🧠 Medical Report Assistant
-        </h1>
-        <button
-          onClick={() => {
-            localStorage.clear();
-            setToken(null);
+        <div
+          style={{
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "space-between",
+            marginBottom: 32,
           }}
-          style={{ flex: 1, textAlign: "right", background: "none", border: "none", fontSize: 18, cursor: "pointer" }}
         >
-          🚪 Logout
-        </button>
+          <div style={{ flex: 1 }} />
+          <h1 style={{ flex: 2, textAlign: "center", margin: 0, fontWeight: 700, fontSize: 32, color: "#2d3748" }}>
+            🧠 Medical Report Assistant
+          </h1>
+          <button
+            onClick={() => {
+              localStorage.clear();
+              setToken(null);
+            }}
+            style={{
+              flex: 1,
+              textAlign: "right",
+              background: "none",
+              border: "none",
+              fontSize: 20,
+              cursor: "pointer",
+              color: "#e53e3e"
+            }}
+          >
+            🚪 Logout
+          </button>
+        </div>
+        <Upload
+          files={files}
+          setFiles={setFiles}
+          uploadedFiles={uploadedFiles}
+          setUploadedFiles={setUploadedFiles}
+        />
+        <hr style={{ width: "100%", margin: "32px 0", border: "none", borderTop: "1px solid #e2e8f0" }} />
+        <Chat />
       </div>
-      <Upload
-        files={files}
-        setFiles={setFiles}
-        uploadedFiles={uploadedFiles}
-        setUploadedFiles={setUploadedFiles}
-      />
-      <hr
-        style={{
-          width: "100vw",
-          margin: "32px 0",
-          position: "relative",
-          left: "50%",
-          right: "50%",
-          transform: "translateX(-50%)"
-        }}
-      />
-      <Chat />
     </div>
   );
 }
